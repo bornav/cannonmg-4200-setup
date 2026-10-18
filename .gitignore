@@ -1,0 +1,9 @@
+result
+*.bin
+.drv/
+# never commit Canon's proprietary driver artifacts
+drv/
+root/
+shim/
+*.deb
+*.tar.gz
