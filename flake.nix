@@ -195,7 +195,7 @@
     in
     {
       packages.${system} = {
-        inherit cnijfilter-mg4200 pstocanonij print-mg4200 setup-mg4200-queue;
+        inherit cnijfilter-mg4200 pstocanonij cups-driver print-mg4200 setup-mg4200-queue;
         default = print-mg4200;
       };
 
