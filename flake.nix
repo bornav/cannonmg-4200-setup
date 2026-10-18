@@ -129,6 +129,18 @@
       '';
 
       # ------------------------------------------------------------------
+      # CUPS driver package: exposes the proot-wrapped pstocanonij under
+      # lib/cups/filter/pstocanonij so that adding this package to
+      # services.printing.drivers puts it on cupsd's FilterPath. The
+      # original Canon PPD references the filter by bare name, so native
+      # (non-raw) printing from KDE/GTK apps then works.
+      # ------------------------------------------------------------------
+      cups-driver = pkgs.runCommand "cnijfilter-mg4200-cups-driver" { } ''
+        mkdir -p $out/lib/cups/filter
+        ln -s ${pstocanonij}/bin/pstocanonij-mg4200 $out/lib/cups/filter/pstocanonij
+      '';
+
+      # ------------------------------------------------------------------
       # print-mg4200: the whole pipeline in one command.
       #   print-mg4200 file.pdf [-o "CUPS options"]
       # ------------------------------------------------------------------
