@@ -7,3 +7,5 @@ root/
 shim/
 *.deb
 *.tar.gz
+# ...except the vendored driver tarball (offline fallback source)
+!vendor/*.tar.gz

@@ -66,8 +66,11 @@ Useful PPD options (see `lpoptions -p mg4200 -l`): `PageSize`, `MediaType`,
 ## Notes
 
 - Canon's driver is under an unfree license; the flake sets `allowUnfree`
-  only for its own package set and never commits Canon binaries — they are
-  fetched from Canon's CDN (`gdlp01.c-wss.com`) at build time.
+  only for its own package set. The driver tarball is **vendored** under
+  `vendor/` so builds keep working if Canon deadlinks their CDN; the flake
+  prefers the vendored copy and falls back to fetching from
+  `gdlp01.c-wss.com` if it is absent. Both paths pin the same sha256
+  (`driverTarballHash` in flake.nix).
 - The PPD (`canonmg4200.ppd`) is also inside the driver package; the queue
   uses it for option metadata even though the filter chain is bypassed.
 - WiFi printing (the MG4200 supports it; `cifmg4200.conf` has

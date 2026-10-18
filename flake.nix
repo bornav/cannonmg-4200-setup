@@ -38,15 +38,26 @@
       # The Canon driver: unpack the official deb tarball, assemble a
       # self-contained root. No compilation; the .so files are Canon's
       # prebuilt amd64 libraries (model id 405).
+      #
+      # Source preference: the tarball vendored in ./vendor (survives Canon
+      # deadlinking their CDN); falls back to fetching from Canon if the
+      # vendor file is absent. Both paths pin the same sha256.
       # ------------------------------------------------------------------
+      driverTarballHash = "sha256-Iw8b8QBPKjcoYW4amudjryI7XNK2h+zhuMzHxQtYxYo=";
+      driverTarballName = "cnijfilter-mg4200series-3.80-1-deb.tar.gz";
+
       cnijfilter-mg4200 = pkgs.stdenv.mkDerivation {
         pname = "cnijfilter-mg4200";
         version = "3.80-1";
 
-        src = pkgs.fetchurl {
-          url = "https://gdlp01.c-wss.com/gds/8/0100004668/01/cnijfilter-mg4200series-3.80-1-deb.tar.gz";
-          sha256 = "sha256-Iw8b8QBPKjcoYW4amudjryI7XNK2h+zhuMzHxQtYxYo=";
-        };
+        src =
+          if pkgs.lib.pathExists ./vendor/${driverTarballName} then
+            ./vendor/${driverTarballName}
+          else
+            pkgs.fetchurl {
+              url = "https://gdlp01.c-wss.com/gds/8/0100004668/01/${driverTarballName}";
+              sha256 = driverTarballHash;
+            };
 
         nativeBuildInputs = [ pkgs.binutils ]; # ar
 
